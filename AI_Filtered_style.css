@@ -1,0 +1,281 @@
+/* ==========================================================================
+   CSS Variables & Reset
+   ========================================================================== */
+:root {
+    --clr-surface: rgba(15, 23, 42, 0.65); /* Dark frosted glass */
+    --clr-surface-hover: rgba(255, 255, 255, 0.08);
+    --clr-border: rgba(255, 255, 255, 0.1);
+    --clr-text-main: #f8fafc;
+    --clr-text-muted: #94a3b8;
+    --clr-accent: #38bdf8;
+    --clr-accent-glow: rgba(56, 189, 248, 0.4);
+    
+    --sidebar-width: 320px;
+    --transition-speed: 0.4s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Hide the checkbox logic completely */
+#check {
+    display: none;
+}
+
+/* ==========================================================================
+   Main Wrapper & Background
+   ========================================================================== */
+.main_box {
+    background-image: url('./assets/photo.jpg');
+    height: 100vh;
+    width: 100vw;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ==========================================================================
+   Hamburger Menu Button (Floating Action Style)
+   ========================================================================== */
+.btn_one {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    background: var(--clr-surface);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--clr-border);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 50;
+}
+
+.btn_one label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    color: var(--clr-text-main);
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.btn_one:hover {
+    background: rgba(15, 23, 42, 0.85);
+    transform: scale(1.05);
+}
+
+/* Hide button smoothly when sidebar opens */
+#check:checked ~ .btn_one {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8) rotate(-90deg);
+}
+
+/* ==========================================================================
+   Sidebar Layout (Glassmorphism & Flexbox)
+   ========================================================================== */
+.sidebar_menu {
+    position: fixed;
+    top: 0;
+    left: calc(var(--sidebar-width) * -1.2); /* Hide completely off-screen */
+    height: 100vh;
+    width: var(--sidebar-width);
+    background: var(--clr-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid var(--clr-border);
+    box-shadow: 20px 0 50px rgba(0, 0, 0, 0.5);
+    transition: left var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    
+    /* Overriding the original absolute positioning with Flexbox */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Sidebar Slide-in Logic */
+#check:checked ~ .sidebar_menu {
+    left: 0;
+}
+
+/* ==========================================================================
+   Sidebar Header (Logo & Close Button)
+   ========================================================================== */
+.sidebar_menu .logo {
+    position: relative;
+    height: 84px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--clr-border);
+    flex-shrink: 0; /* Prevents squishing */
+}
+
+.sidebar_menu .logo a {
+    color: var(--clr-text-main);
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* FIXED: Positioned absolutely to the top of the sidebar_menu. 
+   42px is exactly half of the 84px logo header height. 
+*/
+.sidebar_menu .btn_two {
+    position: absolute;
+    top: 42px; 
+    right: 24px;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.sidebar_menu .btn_two label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: var(--clr-text-muted);
+    font-size: 22px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+}
+
+.sidebar_menu .btn_two label:hover {
+    color: var(--clr-accent);
+    background: var(--clr-surface-hover);
+    transform: rotate(90deg);
+}
+
+/* ==========================================================================
+   Sidebar Navigation Menu
+   ========================================================================== */
+.sidebar_menu .menu {
+    flex: 1; /* Takes up remaining middle space */
+    padding: 24px 16px;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Custom Scrollbar for Menu */
+.sidebar_menu .menu::-webkit-scrollbar { width: 5px; }
+.sidebar_menu .menu::-webkit-scrollbar-track { background: transparent; }
+.sidebar_menu .menu::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+.sidebar_menu .menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar_menu .menu li {
+    display: flex;
+    align-items: center;
+    padding: 14px 20px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+}
+
+.sidebar_menu .menu li:hover {
+    background: var(--clr-surface-hover);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar_menu .menu i {
+    color: var(--clr-text-muted);
+    font-size: 1.25rem;
+    min-width: 35px; /* Ensures consistent text alignment */
+    transition: all 0.3s ease;
+}
+
+.sidebar_menu .menu a {
+    color: var(--clr-text-muted);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+/* UX HACK: Because <a> and <i> are siblings in your HTML, clicking the icon 
+   or empty space wouldn't trigger the link. We use ::after to stretch 
+   the <a> tag over the entire <li> container! */
+.sidebar_menu .menu a::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1;
+}
+
+/* Hover Micro-interactions */
+.sidebar_menu .menu li:hover i,
+.sidebar_menu .menu li:hover a {
+    color: var(--clr-text-main);
+}
+
+.sidebar_menu .menu li:hover i {
+    color: var(--clr-accent);
+    transform: translateX(4px) scale(1.1);
+}
+
+/* ==========================================================================
+   Sidebar Footer (Social Media)
+   ========================================================================== */
+.sidebar_menu .social_media {
+    margin-top: auto; /* Pushes to the absolute bottom via Flexbox */
+    padding: 24px;
+    border-top: 1px solid var(--clr-border);
+    flex-shrink: 0;
+}
+
+/* Fixing your invalid HTML (<a> directly inside <ul>) using Flexbox on the <ul> */
+.sidebar_menu .social_media ul {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+}
+
+.sidebar_menu .social_media a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: var(--clr-text-muted);
+    text-decoration: none;
+    font-size: 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 2; /* Ensures they are clickable above any other layers */
+}
+
+/* Ensure the icon inherits the color of the <a> tag */
+.sidebar_menu .social_media a i {
+    transition: transform 0.3s ease;
+}
+
+/* Social Media Hover glow effects */
+.sidebar_menu .social_media a:hover {
+    color: var(--clr-text-main);
+    background: var(--clr-accent);
+    border-color: var(--clr-accent);
+    box-shadow: 0 4px 15px var(--clr-accent-glow);
+    transform: translateY(-5px);
+}
